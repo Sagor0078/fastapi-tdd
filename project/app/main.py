@@ -1,31 +1,17 @@
-import os
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from app.config import get_settings, Settings
-from tortoise.contrib.fastapi import RegisterTortoise
 from tortoise import Tortoise
+from app.api import ping
+from app.db import init_db
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup logic
-    RegisterTortoise(
-        app,
-        db_url=os.environ.get("DATABASE_URL"),
-        modules={"models": ["app.models.tortoise"]},
-        generate_schemas=False,
-        add_exception_handlers=True,
-    )
-    yield  # Pause here while the app is running
+    # Initialize the database at startup
+    init_db(app)
+    yield  # Keeps the app running
 
-    # Shutdown logic
+    # Close database connections on shutdown
     await Tortoise.close_connections()
 
 app = FastAPI(lifespan=lifespan)
-
-@app.get("/ping")
-async def pong(settings: Settings = Depends(get_settings)):
-    return {
-        "ping": "pong!",
-        "environment": settings.environment,
-        "testing": settings.testing,
-    }
+app.include_router(ping.router)
