@@ -1,4 +1,4 @@
-# fastapi-tdd
+# build, test, and deploy a text summarization microservice with Python, FastAPI, and Docker
 ## Setup
 
 ### Prerequisites
