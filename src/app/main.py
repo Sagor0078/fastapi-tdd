@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from tortoise import Tortoise
-from app.api import ping
+from app.api import ping, summaries
 from app.db import init_db
 
 @asynccontextmanager
@@ -15,3 +15,5 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 app.include_router(ping.router)
+app.include_router(summaries.router, prefix="/summaries", tags=["summaries"])  
+
