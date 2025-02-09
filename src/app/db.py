@@ -1,6 +1,6 @@
 import os
 from fastapi import FastAPI
-from tortoise.contrib.fastapi import register_tortoise
+from tortoise.contrib.fastapi import RegisterTortoise
 from tortoise import Tortoise, run_async
 import logging
 
@@ -20,7 +20,7 @@ TORTOISE_ORM = {
 }
 
 def init_db(app: FastAPI) -> None:
-    register_tortoise(
+    RegisterTortoise(
         app,
         db_url=os.environ.get("DATABASE_URL"),
         modules={"models": ["app.models.tortoise"]},
