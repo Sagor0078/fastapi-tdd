@@ -1,5 +1,5 @@
 ### build, test, and deploy a text summarization microservice with python, fastapi, and docker
-## Setup
+### Setup
 
 ### Prerequisites
 
